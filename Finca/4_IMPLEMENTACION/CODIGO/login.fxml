@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.alda.eaglesystem.controller.LoginController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#832222" height="538.0" opacity="0.79" strokeType="INSIDE" strokeWidth="2.0" width="371.0">
+         <stroke>
+            <LinearGradient cycleMethod="REFLECT" endX="0.9285714285714285" endY="0.3904761904761904" startX="0.48571428571428565" startY="0.3904761904761905">
+               <stops>
+                  <Stop color="WHITE" />
+                  <Stop color="#653017" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </stroke>
+      </Rectangle>
+      <Label layoutX="159.0" layoutY="301.0" text="Usuario">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtUsuario" layoutX="112.0" layoutY="329.0" />
+      <Label layoutX="149.0" layoutY="367.0" text="Contraseña">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="txtClave" layoutX="112.0" layoutY="396.0" />
+      <Button fx:id="btnAcceso" layoutX="112.0" layoutY="453.0" mnemonicParsing="false" onAction="#Validar" prefHeight="25.0" prefWidth="62.0" text="Aceptar" />
+      <ImageView fitHeight="230.0" fitWidth="216.0" layoutX="78.0" layoutY="57.0">
+         <image>
+            <Image url="@icons/10863963_887813384582531_7556724635029390734_o%20(1).jpg" />
+         </image>
+      </ImageView>
+      <TitledPane alignment="CENTER" blendMode="SRC_ATOP" collapsible="false" layoutX="-1.0" opacity="0.6" prefHeight="41.0" prefWidth="371.0" text="Iniciar Sesión">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+         </content>
+         <font>
+            <Font name="Pristina" size="18.0" />
+         </font>
+      </TitledPane>
+      <Button fx:id="btnCerrar" layoutX="199.0" layoutY="453.0" mnemonicParsing="false" onAction="#Cerrar" text="Cancelar" />
+      <Label fx:id="lblMensaje" layoutX="63.0" layoutY="492.0" text="Ready!" />
+   </children>
+</AnchorPane>

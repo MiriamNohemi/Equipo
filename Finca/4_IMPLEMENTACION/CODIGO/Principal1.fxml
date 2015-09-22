@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #F5E8C4;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <TitledPane alignment="CENTER" animated="false" blendMode="SRC_ATOP" collapsible="false" opacity="0.6" prefHeight="0.0" prefWidth="600.0" text="Principal" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+         <font>
+            <Font name="Pristina" size="18.0" />
+         </font>
+      </TitledPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ToggleButton blendMode="SRC_ATOP" layoutX="50.0" layoutY="30.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="147.0" style="-fx-background-color: #832222;" text="Bamba café" textFill="WHITE">
+               <font>
+                  <Font name="Pristina" size="25.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </ToggleButton>
+            <ToggleButton layoutX="600.0" layoutY="30.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="147.0" style="-fx-background-color: #832222;" text="Bamba y arte" textFill="WHITE">
+               <font>
+                  <Font name="Pristina" size="25.0" />
+               </font>
+            </ToggleButton>
+            <ImageView fitHeight="400.0" fitWidth="400.0" layoutX="200.0" layoutY="171.0" opacity="0.38">
+               <image>
+                  <Image url="@icons/10863963_887813384582531_7556724635029390734_o%20(1).jpg" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" layoutX="273.0" layoutY="74.0" opacity="0.53" prefHeight="54.0" prefWidth="254.0" text="¡Bienvenido!" textFill="#bf5d5d">
+               <font>
+                  <Font name="Pristina" size="60.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

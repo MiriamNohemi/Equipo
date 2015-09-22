@@ -1,0 +1,354 @@
+package com.alda.eaglesystem.controller;
+
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
+
+
+import com.alda.eaglesystem.view.ControllerWindow;
+import com.alda.eaglesystem.view.IControllerWindow;
+import com.alda.eaglesystem.model.Employee;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+
+public class EmployeeController implements Initializable, IControllerWindow {
+	@FXML private Button btnEliminar;
+	
+	@FXML private Button btnSave;
+	@FXML private Button btnEditar;
+boolean bandera= true;
+	@FXML private TextField txtNombre;
+	@FXML private TextField txtAP;
+	@FXML private TextField txtAM;
+	@FXML private TextField txtCURP;
+	@FXML private TextField txtUsuario;
+	@FXML private TextField txtClave;
+
+	@FXML private TextField txtConfirmar;
+	@FXML private TitledPane title1;
+	@FXML private TitledPane title2;
+	@FXML private Button btnNuevo;
+	@FXML private Label lblMensaje;
+	 @FXML private Label lblRegistros;
+	@FXML private ComboBox<String> cboTipo;
+
+	ControllerWindow myController;
+	Employee empleadoSeleccionado=null;
+	
+	@FXML private TableView<Employee> tvEmpleados;
+	
+	
+	public void Clean(){
+		txtNombre.setText(""); 
+		txtAP.setText(""); 
+		txtAM.setText(""); 
+		txtCURP.setText(""); 
+		txtUsuario.setText(""); 
+		lblMensaje.setText("");
+		txtClave.setText(""); 
+		txtConfirmar.setText("");
+		cboTipo.setValue(""); 
+		empleadoSeleccionado=null; 
+		}
+	
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1){
+		try{
+			LlenarCombo();
+			llenarTabla();
+			btnEditar.setDisable(true); 
+			btnEliminar.setDisable(true); 
+			
+			btnEditar.setOnAction(new btnEditar_Click());
+			btnNuevo.setOnAction(new btnNuevo_Click());
+			
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
+	private void LlenarCombo(){
+		cboTipo.getItems().add("Empleado");
+		cboTipo.getItems().add("Cajero");
+		cboTipo.getItems().add("Master");
+
+	}
+	
+	
+	public void Save() throws ClassNotFoundException, InstantiationException, 
+	InstantiationException, SQLException, Exception{
+		
+		if(empleadoSeleccionado==null){
+			if(!txtNombre.getText().trim().isEmpty()){
+				txtAP.focusTraversableProperty();
+				
+				if(!txtAP.getText().trim().isEmpty()){
+					if(!txtAM.getText().trim().isEmpty()){
+						if(!txtCURP.getText().trim().isEmpty()){	
+								if(txtCURP.getText().trim().length()<19){
+									if(txtCURP.getText().trim().length()>17){
+										if(!txtUsuario.getText().trim().isEmpty()){
+											if(!txtClave.getText().trim().isEmpty()){
+												if(!txtConfirmar.getText().trim().isEmpty()){
+													if(txtConfirmar.getText().equals(txtClave.getText())){
+														 if(cboTipo.getValue()!=null){ 
+
+											Employee nuevo= new Employee(txtNombre.getText(), txtAP.getText(),
+													txtAM.getText(),txtCURP.getText(), txtUsuario.getText(), txtClave.getText(), cboTipo.getValue().toString());
+											lblMensaje.setText("El formulario se ha enviado correctamente");
+											nuevo.Guardar();
+											llenarTabla();
+											Clean();
+											bandera=false;
+
+											tvEmpleados.setDisable(false);
+
+
+														 }else{
+															 lblMensaje.setText("Seleccione un tipo de usuario");
+														 }
+													}else{
+														lblMensaje.setText("Clave incorrecta");
+													}
+												}else{
+													lblMensaje.setText("Confirma la clave");
+												}
+											}else{
+												lblMensaje.setText("El campo clave no debe ser vacio");
+											}
+										}else{
+											lblMensaje.setText("No se permite vacio el campo usuario");
+										}
+
+									}else{
+										lblMensaje.setText("La curp debe contener 18 digitos");
+
+									}
+								}else{
+									lblMensaje.setText("La curp debe contener 18 digitos");
+								
+							}
+						}else{
+							lblMensaje.setText("No se permite el Curp  vacio");
+						}
+					}else{
+						
+						lblMensaje.setText("No se permite el campo apellido materno vacio");
+					}
+				}else{
+					lblMensaje.setText("No se permite el campo apellido paterno vacio");
+				}
+			}else{
+				lblMensaje.setText("No se permite el campo nombre vacio");
+			}
+			
+	}else{
+		
+		if((!txtNombre.getText().trim().isEmpty())&&(!txtAP.getText().trim().isEmpty())&&(!txtAM.getText().trim().isEmpty())){
+
+		Employee nuevo = new Employee();
+
+		empleadoSeleccionado.setName(txtNombre.getText());
+		empleadoSeleccionado.setLastName(txtAP.getText());
+		empleadoSeleccionado.setSecondLastName(txtAM.getText());
+		empleadoSeleccionado.setCurp(txtCURP.getText());
+		empleadoSeleccionado.setUser(txtUsuario.getText());
+		empleadoSeleccionado.setType(cboTipo.getValue());
+		empleadoSeleccionado.Actualizar(nuevo);
+		llenarTabla();
+		lblMensaje.setText("El empleado ha sido actualizado");
+		Clean();
+		tvEmpleados.setDisable(false);
+		txtClave.setDisable(false);
+		txtConfirmar.setDisable(false);
+
+		empleadoSeleccionado=null;
+		}else{
+			lblMensaje.setText("Error: el empleado no se ha podido actualizar");
+		}
+
+		
+	}
+		
+
+		
+		}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void llenarTabla() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException, Exception{
+		tvEmpleados.getItems().clear();
+		List<Employee> lst;
+		Employee obj = new Employee();
+		lst = obj.Listar();
+		
+		
+		ObservableList<Employee> data = FXCollections.observableArrayList();
+				lst = obj.Listar();
+				data.addAll(lst);
+				
+		TableColumn colNombre = new TableColumn("Nombre");
+		colNombre.setCellValueFactory(new PropertyValueFactory<Employee, String>("Name"));
+		
+		
+		TableColumn colAP = new TableColumn("A.Paterno");
+		colAP.setCellValueFactory(new PropertyValueFactory<Employee, String>("LastName"));
+		
+		TableColumn colAM = new TableColumn("A.Materno");
+		colAM.setCellValueFactory(new PropertyValueFactory<Employee, String>("SecondLastName"));
+		
+		TableColumn colCurp = new TableColumn("curp");
+		colCurp.setCellValueFactory(new PropertyValueFactory<Employee, String>("Curp"));
+		
+		TableColumn colUser = new TableColumn("usuario");
+		colUser.setCellValueFactory(new PropertyValueFactory<Employee, String>("User"));
+		
+		TableColumn colClaver = new TableColumn("clave");
+		colClaver.setCellValueFactory(new PropertyValueFactory<Employee, String>("Key"));
+		
+		TableColumn colType = new TableColumn("tipo");
+		colType.setCellValueFactory(new PropertyValueFactory<Employee, String>("Type"));
+		
+		tvEmpleados.setOnMouseClicked(new EventHandler() {
+
+			 @Override
+			 public void handle(Event arg0) {
+			 empleadoSeleccionado = tvEmpleados.getSelectionModel().getSelectedItems().get(0);
+			 txtNombre.setText(empleadoSeleccionado.getName().trim());
+			 txtAP.setText(empleadoSeleccionado.getLastName().trim());
+			 txtAM.setText(empleadoSeleccionado.getSecondLastName().trim());
+			 txtCURP.setText(empleadoSeleccionado.getCurp().trim());
+			  txtUsuario.setText(empleadoSeleccionado.getUser().trim());
+			  txtClave.setText(empleadoSeleccionado.getKey().trim());
+			  cboTipo.setValue(empleadoSeleccionado.getType().trim());
+			  
+			  txtConfirmar.setDisable(true);
+				txtClave.setDisable(true);
+
+			  btnSave.setDisable(true);
+				btnEliminar.setDisable(false);
+				btnEditar.setDisable(false);
+				
+				title1.setDisable(true);
+				title2.setDisable(true);
+			  
+			  
+			}
+			 });
+		
+		tvEmpleados.getItems().addAll(data);
+		if(bandera==true){
+		tvEmpleados.getColumns().addAll(colNombre, colAP, colAM, colCurp, colUser, colClaver, colType);
+		bandera = false;
+		}
+		lblRegistros.setText("Total: "+ lst.size()+ " Registro(s)");
+		
+	}
+	
+	
+	
+	public void Buscar() throws ClassNotFoundException,
+	InstantiationException, IllegalAccessException, SQLException,
+	Exception {
+		Employee consulta = new Employee();
+		consulta.Buscar(10);
+	}
+	
+	public void eliminar() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Atención ");
+		alert.setHeaderText("¿Desea eliminar este registro?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if (result.get() == ButtonType.OK){
+		
+		
+		if(empleadoSeleccionado!=null){
+			try {
+				empleadoSeleccionado.Eliminar();
+				lblMensaje.setText("El empleado ha sido eliminado");
+				empleadoSeleccionado= null;
+				llenarTabla();
+				Clean();
+				btnEliminar.setDisable(true);
+				btnEditar.setDisable(true);
+				btnSave.setDisable(false);
+				title1.setDisable(false);
+				title2.setDisable(false);
+				
+			} catch (ClassNotFoundException e) {
+				lblMensaje.setText(e.getMessage());
+			}
+			catch (InstantiationException e) {
+				lblMensaje.setText(e.getMessage());
+			}
+			catch (IllegalAccessException e) {
+				lblMensaje.setText(e.getMessage());
+			}
+			catch (SQLException e) {
+				lblMensaje.setText(e.getMessage());
+			}
+			catch (Exception e) {
+				lblMensaje.setText(e.getMessage());
+			}
+			
+		}
+		}else{
+		
+			
+		}
+		
+		//System.out.println("Voy eliminar");
+	}
+	private class btnNuevo_Click implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent arg0) {
+			Clean();
+			empleadoSeleccionado= null;
+			tvEmpleados.setDisable(false);
+			title1.setDisable(false);
+			title2.setDisable(false);		
+			btnEditar.setDisable(true);
+			btnEliminar.setDisable(true);
+			btnSave.setDisable(false);
+			txtClave.setDisable(false);
+			txtConfirmar.setDisable(false);
+		}		
+	}
+	
+	private class btnEditar_Click implements EventHandler<ActionEvent>{
+		public void handle(ActionEvent arg0) {
+			btnEliminar.setDisable(true);
+			btnEditar.setDisable(true);
+			title1.setDisable(false);
+			title2.setDisable(false);
+			tvEmpleados.setDisable(true);
+			btnSave.setDisable(false);
+		}	
+	}
+	@Override
+	public void getPrincipalWindow(ControllerWindow InternalPage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+}
